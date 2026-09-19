@@ -1,7 +1,0 @@
-<!DOCTYPE html>
-<html>
-<head><title>Process Logo</title></head>
-<body>
-  <canvas id="canvas"></canvas>
-  <script>
-    const b64Raw = `
