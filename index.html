@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Assets/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -17,7 +17,7 @@
     <div class="header-container">
       <a href="#" class="brand-logo">
         <div class="brand-icon">
-          <img src="Assets/vp_logo_detoure_original.png" alt="Veltrion Partners VP Emblem" class="brand-img-logo">
+          <img src="vp_logo_detoure_original.png" alt="Veltrion Partners VP Emblem" class="brand-img-logo">
         </div>
         <div>
           <div class="brand-text">VELTRION PARTNERS</div>
@@ -193,16 +193,16 @@
             <code>Base Implied Odds = 1 / P(Polymarket)</code><br>
             <code>Alpha Implied Odds = Base Odds × [1 + ((100 - PricedIn%) / 100) × (SignalStrength% / 100) × 0.42 + (β_stock / 20) × 0.22]</code>
           </div>
-          <p data-i18n="methFormulaDesc">The Implied Value Alpha model quantifies the temporal lag between rapid prediction market re-pricing and trailing stock equity valuations. When prediction odds shift before stock prices adjust, the model projects asymmetric value alpha.</p>
+          <p data-i18n="methFormulaDesc">The Implied Value Alpha model quantifies the temporal lag between rapid prediction market re-pricing and trailing stock equity valuations. When prediction odds shift before stock prices fully adjust, the model estimates the unpriced value component attributable to direct company exposure and event sensitivity.</p>
         </div>
 
         <!-- Card 2: Dual Data Pillars -->
         <div class="methodology-card">
           <div class="methodology-card-title" data-i18n="methPillarsTitle">2. Dual Core Pillars & Correlation Signals</div>
           <ul class="methodology-list">
-            <li><strong data-i18n="methPillar1Title">Polymarket Live Order Book:</strong> Direct stream of live event resolution probabilities ($P_{YES}$ / $P_{NO}$) updated in real time via the Polymarket Gamma API.</li>
+            <li><strong data-i18n="methPillar1Title">Polymarket Live Order Book:</strong> Direct stream of live event resolution probabilities (PYES / PNO) updated in real time via prediction market liquidity.</li>
             <li><strong data-i18n="methPillar2Title">Market Priced-In Level (%):</strong> Evaluates 30-day trailing stock momentum against prediction odds velocity to calculate unpriced equity alpha.</li>
-            <li><strong data-i18n="methPillar3Title">Signal Strength Conviction (%):</strong> Multi-factor revenue and EPS exposure score derived from SEC EDGAR 10-K filings, corporate supply chains, and macroeconomic factor sensitivities.</li>
+            <li><strong data-i18n="methPillar3Title">Signal Strength Conviction (%):</strong> Multi-factor revenue and EPS exposure score derived from SEC EDGAR 10-K filings, corporate supply chain data, and sector beta.</li>
           </ul>
         </div>
 
@@ -224,8 +224,8 @@
         <!-- Card 4: Quantitative Beta Matrix & Execution Pipeline -->
         <div class="methodology-card">
           <div class="methodology-card-title" data-i18n="methBetaTitle">4. Event Beta & Stock Sensitivity Matrix</div>
-          <p data-i18n="methBetaDesc" style="margin-bottom: 0.75rem;">Each corporate equity is assigned a specialized sector event beta ($\beta_{\text{event}}$). For macro rate decisions, commercial tariffs, or defense spending approvals, the model computes price impact coefficients per basis point shift in prediction odds.</p>
-          <p data-i18n="methSourcesDesc" style="font-size: 0.85rem; color: var(--text-secondary); border-top: 1px dashed var(--border-subtle); padding-top: 0.75rem;">Engineered by Veltrion Partners and powered by Gemini 3.1 Pro reasoning, data is synthesized continuously from live prediction orderbooks, SEC EDGAR disclosures, interest rate futures curves, and historical stock betas.</p>
+          <p data-i18n="methBetaDesc" style="margin-bottom: 0.75rem;">Each corporate equity is assigned a specialized sector event beta (βevent). For macro rate decisions, commercial exposure and product demand elasticity materially alter the final alpha calculation.</p>
+          <p data-i18n="methSourcesDesc" style="font-size: 0.85rem; color: var(--text-secondary); border-top: 1px dashed var(--border-subtle); padding-top: 0.75rem;">Engineered by Veltrion Partners and powered by Gemini 3.1 Pro reasoning, data is synthesized continuously from live prediction orderbooks, SEC EDGAR regulatory disclosures, macroeconomic futures, and sector beta history.</p>
         </div>
       </div>
     </div>
@@ -249,7 +249,7 @@
       <!-- Odds Analysis Banner in Modal -->
       <div class="modal-odds-banner">
         <div>
-          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="modalOddsBannerTitle">QUANTITATIVE BENEFICIARY ODDS & VALUE BOOST</div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="modalOddsBannerTitle">QUANTITATIVE BENEFICIARY ODDS & IMPLIED ALPHA</div>
           <div style="font-size: 0.85rem; color: var(--text-secondary);" id="modal-odds-sub-detail">Implied Polymarket Odds vs Boosted Value Odds</div>
         </div>
         <div style="display: flex; align-items: center; gap: 0.75rem;">
@@ -335,10 +335,8 @@
     <p data-i18n="footerText">Polymarket Stock Beneficiary Adviser &copy; 2026 — Quantitative Market Intelligence</p>
   </footer>
 
-  <script src="Assets/polymarket_api.js"></script>
-  <script src="Assets/beneficiary_mapping.js"></script>
-  <script src="Assets/app.js"></script>
+  <script src="polymarket_api.js"></script>
+  <script src="beneficiary_mapping.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
-
-
