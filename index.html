@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veltrion Partners — Event Implied Equity Intelligence</title>
+  <meta name="description" content="Stock market beneficiary & impact intelligence platform based on Polymarket prediction events. Identify top corporate gainers and risk exposure under event resolution scenarios.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Assets/styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">
+          <img src="Assets/vp_logo_detoure_original.png" alt="Veltrion Partners VP Emblem" class="brand-img-logo">
+        </div>
+        <div>
+          <div class="brand-text">VELTRION PARTNERS</div>
+          <div class="brand-subtext" data-i18n="brandSubtext">Powered by Gemini 3.1 Pro</div>
+        </div>
+        <span class="brand-badge">PRO v2.4</span>
+      </a>
+
+      <!-- Primary View Navigation Tabs (Clean text only, no icons) -->
+      <nav class="app-nav">
+        <button class="nav-tab active" id="nav-btn-dashboard" data-i18n="navDashboard">Dashboard</button>
+        <button class="nav-tab" id="nav-btn-methodology" data-i18n="navMethodology">Methodology & Model</button>
+      </nav>
+
+      <div class="header-stats">
+        <!-- Segmented Light / Dark Theme Switcher -->
+        <div class="theme-switcher">
+          <button id="theme-dark-btn" class="theme-btn active" data-theme="dark">Dark</button>
+          <button id="theme-light-btn" class="theme-btn" data-theme="light">Light</button>
+        </div>
+
+        <!-- Language Switcher Button -->
+        <div class="lang-switcher">
+          <button id="lang-en-btn" class="lang-btn active" data-lang="en">EN</button>
+          <button id="lang-fr-btn" class="lang-btn" data-lang="fr">FR</button>
+        </div>
+
+        <div class="stat-chip" id="api-status-chip">
+          <span class="dot"></span>
+          <span id="api-status-text">Connected to Polymarket API</span>
+        </div>
+        <div class="stat-chip">
+          <span data-i18n="eventsAnalyzed">Events analyzed:</span>
+          <strong id="events-count-badge" class="text-highlight">0</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Layout Container -->
+  <main class="main-layout" id="main-dashboard-view">
+
+    <!-- Left Sidebar: Event List & Filters -->
+    <aside class="events-sidebar">
+      <div class="controls-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" class="search-input" placeholder="Search event or stock ticker (NVDA, Fed...)..." data-i18n-placeholder="searchPlaceholder">
+        </div>
+      </div>
+
+      <div class="category-pills" id="category-pills">
+        <button class="pill-btn active" data-category="all" data-i18n="catAll">All</button>
+        <button class="pill-btn" data-category="Macro & Fed" data-i18n="catMacro">Macro & Fed</button>
+        <button class="pill-btn" data-category="Tech & AI Policy" data-i18n="catTech">Tech & AI</button>
+        <button class="pill-btn" data-category="Defense & Geopolitics" data-i18n="catDefense">Defense</button>
+        <button class="pill-btn" data-category="Energy & Climate" data-i18n="catEnergy">Energy</button>
+        <button class="pill-btn" data-category="Politics & Taxes" data-i18n="catPolitics">Politics & Taxes</button>
+        <button class="pill-btn" data-category="Biotech & Healthcare" data-i18n="catBiotech">Biotech</button>
+        <button class="pill-btn" data-category="Crypto & Finance" data-i18n="catCrypto">Crypto</button>
+      </div>
+
+      <div class="sidebar-title">
+        <span data-i18n="sidebarTitle">Polymarket Markets</span>
+        <span style="font-size: 0.8rem; color: var(--text-muted);" id="market-list-subtitle" data-i18n="sidebarSubtitle">Select a market</span>
+      </div>
+
+      <!-- Events List Container -->
+      <div id="events-list-container">
+        <!-- Event cards will be dynamically injected here -->
+      </div>
+    </aside>
+
+    <!-- Main View Panel: Active Event Dashboard -->
+    <section class="dashboard-container">
+
+      <!-- TOP ALPHA LEADERBOARD BANNER -->
+      <div class="top-opportunities-banner" id="top-opportunities-banner">
+        <div class="banner-header">
+          <div class="banner-title-group">
+            <div class="banner-title" id="banner-title" data-i18n="topBannerTitle">LEADERBOARD DES COTES ALPHA</div>
+            <div class="banner-subtitle" id="banner-subtitle" data-i18n="topBannerSubtitleBoost">Top 3 des opportunités classées par le plus fort alpha de valeur</div>
+          </div>
+          
+          <!-- Dual Leaderboard Tabs (Highest Alpha vs Ending Soon) -->
+          <div class="banner-tabs">
+            <button class="banner-tab-btn active" id="btn-top-boost" data-i18n="tabHighestBoost">Top Alpha Leads</button>
+            <button class="banner-tab-btn" id="btn-top-ending" data-i18n="tabEndingSoon">Ending Soon</button>
+          </div>
+        </div>
+        <div class="top-cards-grid" id="top-cards-grid">
+          <!-- Top 3 stock chips injected dynamically -->
+        </div>
+      </div>
+      
+      <!-- Event Hero View -->
+      <div class="glass-panel event-hero" id="event-hero-panel">
+        <div class="hero-top">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+              <span class="event-category-badge" id="hero-category">Macro & Fed</span>
+              <!-- Live Ticking Countdown Timer -->
+              <span class="timer-chip" id="hero-timer-chip">
+                <span class="timer-icon">⏱</span>
+                <span id="hero-countdown-text">65d 14h 22m 10s</span>
+              </span>
+            </div>
+            <h1 class="hero-title" id="hero-title">Loading Polymarket Data...</h1>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.775rem; color: var(--text-muted);" data-i18n="polyVolume">Polymarket Volume</div>
+            <div style="font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; color: var(--text-primary);" id="hero-volume">$0</div>
+          </div>
+        </div>
+
+        <p class="hero-description" id="hero-description">
+          Select a prediction market to inspect detailed corporate equity beneficiary analysis.
+        </p>
+
+        <!-- Interactive Outcome Toggle & Fixed Read-Only Probability Display -->
+        <div class="scenario-controls">
+          <div class="outcome-toggle-group">
+            <span class="control-label" data-i18n="resolutionScenario">Resolution Scenario</span>
+            <div class="toggle-btns">
+              <button class="toggle-btn active-yes" id="btn-scenario-yes" data-i18n="btnYes">YES (If occurs)</button>
+              <button class="toggle-btn" id="btn-scenario-no" data-i18n="btnNo">NO (If rejected)</button>
+            </div>
+          </div>
+
+          <!-- Fixed Read-Only Polymarket Gauge -->
+          <div class="fixed-prob-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem;">
+              <span style="font-weight: 600; color: var(--text-secondary);" data-i18n="fixedProbTitle">Polymarket Market Odds</span>
+              <span style="font-family: var(--font-mono); font-weight: 700; color: var(--text-primary); font-size: 1.05rem;" id="hero-live-prob">64% YES</span>
+            </div>
+            <div class="fixed-prob-bar-track">
+              <div class="fixed-prob-bar-fill" id="hero-live-prob-bar" style="width: 64%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Beneficiary Stock Grid Section -->
+      <div class="beneficiaries-section">
+        <div class="section-header">
+          <h2 class="section-title">
+            <span data-i18n="impactedTitle">Entreprises Impactées & Cotes Alpha Implicites</span>
+            <span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);" id="beneficiaries-subtitle">(Classement par Cotes Alpha)</span>
+          </h2>
+        </div>
+
+        <div class="beneficiaries-grid" id="beneficiaries-grid">
+          <!-- Stock Cards injected dynamically -->
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- DEDICATED EXPANDED METHODOLOGY PANEL (FULL TAB VIEW) -->
+  <section class="methodology-container" id="main-methodology-view" style="display: none;">
+    <div class="glass-panel methodology-panel">
+      <div class="methodology-header">
+        <h1 data-i18n="methodologyTitle">Quantitative Implied Alpha & Pricing Lag Methodology</h1>
+        <p data-i18n="methodologySubtitle">Institutional model framework developed by Veltrion Partners & powered by Gemini 3.1 Pro engine.</p>
+      </div>
+
+      <div class="methodology-grid">
+        <!-- Card 1: Core Alpha Formula -->
+        <div class="methodology-card">
+          <div class="methodology-card-title" data-i18n="methFormulaTitle">1. Mathematical Implied Base Odds & Alpha Model</div>
+          <div class="formula-box">
+            <code>Base Implied Odds = 1 / P(Polymarket)</code><br>
+            <code>Alpha Implied Odds = Base Odds × [1 + ((100 - PricedIn%) / 100) × (SignalStrength% / 100) × 0.42 + (β_stock / 20) × 0.22]</code>
+          </div>
+          <p data-i18n="methFormulaDesc">The Implied Value Alpha model quantifies the temporal lag between rapid prediction market re-pricing and trailing stock equity valuations. When prediction odds shift before stock prices adjust, the model projects asymmetric value alpha.</p>
+        </div>
+
+        <!-- Card 2: Dual Data Pillars -->
+        <div class="methodology-card">
+          <div class="methodology-card-title" data-i18n="methPillarsTitle">2. Dual Core Pillars & Correlation Signals</div>
+          <ul class="methodology-list">
+            <li><strong data-i18n="methPillar1Title">Polymarket Live Order Book:</strong> Direct stream of live event resolution probabilities ($P_{YES}$ / $P_{NO}$) updated in real time via the Polymarket Gamma API.</li>
+            <li><strong data-i18n="methPillar2Title">Market Priced-In Level (%):</strong> Evaluates 30-day trailing stock momentum against prediction odds velocity to calculate unpriced equity alpha.</li>
+            <li><strong data-i18n="methPillar3Title">Signal Strength Conviction (%):</strong> Multi-factor revenue and EPS exposure score derived from SEC EDGAR 10-K filings, corporate supply chains, and macroeconomic factor sensitivities.</li>
+          </ul>
+        </div>
+
+        <!-- Card 3: Dual Gauges Logic -->
+        <div class="methodology-card">
+          <div class="methodology-card-title" data-i18n="methGaugesTitle">3. Institutional Dual Gauges Interpretation</div>
+          <div class="gauges-explain-grid">
+            <div>
+              <strong style="color: var(--accent-gainer);" data-i18n="methPricedInLow">Low Priced-In (0–35%):</strong>
+              <p data-i18n="methPricedInLowDesc">High unpriced opportunity. The equity market has not yet discounted the prediction outcome, creating maximum risk/reward asymmetry.</p>
+            </div>
+            <div style="margin-top: 0.5rem;">
+              <strong style="color: var(--accent-cyan);" data-i18n="methSignalHigh">High Signal Conviction (80–100%):</strong>
+              <p data-i18n="methSignalHighDesc">High directional conviction. Corporate cash flows and guidance have direct material exposure to the event catalyst.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Quantitative Beta Matrix & Execution Pipeline -->
+        <div class="methodology-card">
+          <div class="methodology-card-title" data-i18n="methBetaTitle">4. Event Beta & Stock Sensitivity Matrix</div>
+          <p data-i18n="methBetaDesc" style="margin-bottom: 0.75rem;">Each corporate equity is assigned a specialized sector event beta ($\beta_{\text{event}}$). For macro rate decisions, commercial tariffs, or defense spending approvals, the model computes price impact coefficients per basis point shift in prediction odds.</p>
+          <p data-i18n="methSourcesDesc" style="font-size: 0.85rem; color: var(--text-secondary); border-top: 1px dashed var(--border-subtle); padding-top: 0.75rem;">Engineered by Veltrion Partners and powered by Gemini 3.1 Pro reasoning, data is synthesized continuously from live prediction orderbooks, SEC EDGAR disclosures, interest rate futures curves, and historical stock betas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deep Company Analysis Modal -->
+  <div class="modal-overlay" id="company-modal">
+    <div class="modal-container">
+      <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <span class="ticker-badge" id="modal-ticker">NVDA</span>
+          <div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.3rem; color: var(--text-primary);" id="modal-company-name">NVIDIA Corporation</h3>
+            <div style="font-size: 0.85rem; color: var(--text-muted);" id="modal-sector">Semiconductors & AI</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Odds Analysis Banner in Modal -->
+      <div class="modal-odds-banner">
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;" data-i18n="modalOddsBannerTitle">QUANTITATIVE BENEFICIARY ODDS & VALUE BOOST</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);" id="modal-odds-sub-detail">Implied Polymarket Odds vs Boosted Value Odds</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span class="base-odds" id="modal-base-odds" style="font-size: 1.05rem;">1.65</span>
+          <span class="boosted-odds" id="modal-boosted-odds" style="font-size: 1.3rem;">2.35</span>
+          <span class="boost-pill" id="modal-boost-pill">+42% BOOST</span>
+        </div>
+      </div>
+
+      <!-- Market Priced-In & Signal Strength Section in Modal -->
+      <div class="modal-section" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-medium); padding: 1.15rem; border-radius: var(--radius-md);">
+        <div class="modal-section-title" data-i18n="modalPricedInTitle">MARKET PRICED-IN & SIGNAL ANALYSIS</div>
+        
+        <!-- Modal Dual Gauges -->
+        <div class="dual-gauges-grid" style="margin-bottom: 1rem;">
+          <div class="gauge-card">
+            <div class="gauge-top-row">
+              <span class="gauge-title" data-i18n="pricedInLabel">Market Priced-In</span>
+              <span class="gauge-value-text" id="modal-priced-in-status">42%</span>
+            </div>
+            <div class="gauge-track">
+              <div class="gauge-fill fill-priced-in" id="modal-priced-in-bar" style="width: 42%;"></div>
+            </div>
+            <div class="gauge-subtitle-text" id="modal-priced-in-status-text">Partially Priced-In (42%)</div>
+          </div>
+
+          <div class="gauge-card">
+            <div class="gauge-top-row">
+              <span class="gauge-title" data-i18n="signalLabel">Signal Strength</span>
+              <span class="gauge-value-text signal-high" id="modal-signal-score">94%</span>
+            </div>
+            <div class="gauge-track">
+              <div class="gauge-fill fill-signal" id="modal-signal-bar" style="width: 94%;"></div>
+            </div>
+            <div class="gauge-subtitle-text" id="modal-signal-status-text">High Conviction Signal</div>
+          </div>
+        </div>
+
+        <p class="modal-text" id="modal-priced-in-move" style="font-size: 0.875rem; margin-bottom: 0.5rem; color: var(--text-secondary);">Recent stock price evolution analysis...</p>
+        <div style="font-size: 0.85rem; font-weight: 600; color: var(--accent-gainer);" id="modal-priced-in-asymmetry">Risk/Reward asymmetry...</div>
+      </div>
+
+      <div class="modal-section" style="margin-top: 1.25rem;">
+        <div class="modal-section-title" data-i18n="modalFinancialLogic">FINANCIAL LOGIC & MECHANISM</div>
+        <p class="modal-text" id="modal-rationale">Financial explanation...</p>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title" data-i18n="modalPrimaryCatalyst">PRIMARY CATALYST</div>
+        <p class="modal-text" id="modal-catalyst">Primary catalyst...</p>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title" data-i18n="modalCorporateMetrics">CORPORATE METRICS</div>
+        <div class="metrics-grid">
+          <div>
+            <div style="font-size: 0.775rem; color: var(--text-muted);" data-i18n="modalMarketCap">Market Cap</div>
+            <div style="font-weight: 700; color: var(--text-primary);" id="modal-mcap">$0</div>
+          </div>
+          <div>
+            <div style="font-size: 0.775rem; color: var(--text-muted);" data-i18n="modalExposure">Sector Exposure</div>
+            <div style="font-weight: 700; color: var(--text-primary);" id="modal-exposure">0%</div>
+          </div>
+          <div>
+            <div style="font-size: 0.775rem; color: var(--text-muted);" data-i18n="modalSensitivity">Stock Sensitivity</div>
+            <div style="font-weight: 700; color: var(--accent-gainer);" id="modal-sensitivity">+0%</div>
+          </div>
+          <div>
+            <div style="font-size: 0.775rem; color: var(--text-muted);" data-i18n="modalDebt">Debt / Equity</div>
+            <div style="font-weight: 700; color: var(--text-primary);" id="modal-debt">0.0 D/E</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title" data-i18n="modalRisks" style="color: var(--accent-risk);">RISK FACTORS & UNCERTAINTIES</div>
+        <p class="modal-text" id="modal-risks" style="color: #f87171;">Risk factors...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p data-i18n="footerText">Polymarket Stock Beneficiary Adviser &copy; 2026 — Quantitative Market Intelligence</p>
+  </footer>
+
+  <script src="Assets/polymarket_api.js"></script>
+  <script src="Assets/beneficiary_mapping.js"></script>
+  <script src="Assets/app.js"></script>
+</body>
+</html>
+
+
